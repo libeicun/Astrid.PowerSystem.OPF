@@ -1,0 +1,310 @@
+#include "stdio.h"	        //定义输入/输出函数
+#include "math.h"	        //定义数学函数
+#include "malloc.h"         //动态存储分配函数头文件,当对内存区进行操作时,调用相关函数.ANSI标准建议使用stdlib.h头文件,但许多C编译要求用malloc.h
+
+#include "windows.h"        //定义了Windows的所有资料型态、函数调用、资料结构和常数识别字，它们是Windows文件中的一个重要部分。
+#include "windowsx.h"       
+
+#define CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
+
+void main( )
+{	double php,phq;
+	int i,j,k,kk,m,n,t,s;//m是序号，k是牛顿-拉夫逊法求解次数，kk是设定的求解次数阀值
+	double g[100][100],b[100][100],y[100][100],hd[100][100];
+	double e,wch,uph,upv[50],upvmin[50],upvmax[50];//e为计算精度，uph平衡节点电压
+	double r,x,bb,gij,bij,k0;
+	int phd,pvd[50];
+	double p[100],q[100],v[100],rad[100],pp[100],qq[100],dp[100],dq[100];
+	double hnjl[200][200],radv[200];
+	int z;                                                       //定义节点个数变量z
+	FILE *fp;
+	
+	for(m=1;m<=99;m++)                                           //数组g(电导数组),b（电纳数组）清零
+		for(n=1;n<=99;n++)
+		{	
+			g[m][n]=0;
+			b[m][n]=0;
+		}
+	for(m=1;m<=99;m++)                                          //数组y,hd清零
+		for(n=1;n<=99;n++)
+		{	y[m][n]=0;
+			hd[m][n]=0;
+		}
+	for(n=1;n<=99;n++)                                         //数组v,rad,p,q清零
+	{	v[n]=1;
+		rad[n]=0;
+		p[n]=0;
+		q[n]=0;
+	}
+	kk=20; 
+	wch=1;
+	fp=fopen("30sj1.txt","rb");                              //open the file named "30sj1.txt"
+	fscanf(fp,"%d,%d,%lf,%lf",&z,&phd,&uph,&e);              //读数据分别为z 节点数，phd平衡节点，uph平衡节点电压，e计算精度
+								 //记录平衡节点序号phd
+	fscanf(fp,"%d",&m);                                      //读的是0，（数据间隔）
+	fscanf(fp,"%d",&m);                                      //开始读线路信号，读的 “m ”此时是文件里面写的线路序号
+	while(m!=0)                                              //“m” is 编号（“30sj1.txt”中给定）
+	{	fscanf(fp,",%d,%d,%lf,%lf,%lf",&i,&j,&r,&x,&bb); //(i和j是节点号，r是线路电阻，x是线路电抗，bb是线路电纳)读线路参数并处理
+		gij=r/(r*r+x*x);                                //该循环将线路数据处理成电导矩阵和电纳矩阵，最终形成导纳矩阵
+		bij=-x/(r*r+x*x);
+		g[j][i]=-gij;             		       //g和b在开始已经清零，互导纳为负
+		g[i][j]=-gij;						
+		b[j][i]=-bij;				      //互导纳为负
+		b[i][j]=-bij;
+		g[i][i]=g[i][i]+gij;
+		b[i][i]=b[i][i]+bij+bb;                     //因为线路电纳只包含在自电纳中，所以bb加在b[i][i]和b[j][j]里面
+		g[j][j]=g[j][j]+gij;
+		b[j][j]=b[j][j]+bij+bb;
+		fscanf(fp,"%d",&m);			    //读是否为0，不为0时，一行行循环，直至本线路参数结束，读到0
+	}
+	
+	fscanf(fp,"%d",&m);				   //m!=0,就读变压器参数，m为序号；m=0，没有变压器，读过while到scanf，读下一个接地支路参数
+	while(m!=0)                                       //读变压器参数并处理
+	{	fscanf(fp,",%d,%d,%lf,%lf,%lf",&i,&j,&r,&x,&k0);//i、j为节点号，r为电阻，x为感抗，k0为比值
+		gij=r/(r*r+x*x);
+		bij=-x/(r*r+x*x);				//归算到j点，它的的导纳不用归算
+		g[i][j]=-gij/k0;
+		g[j][i]=-gij/k0;
+		b[i][j]=-bij/k0;
+		b[j][i]=-bij/k0;
+		g[i][i]=g[i][i]+gij/k0/k0;
+		b[i][i]=b[i][i]+bij/k0/k0;
+		g[j][j]=g[j][j]+gij;
+		b[j][j]=b[j][j]+bij;
+		fscanf(fp,"%d",&m);			//m=0时,读完变压器，接着读接地支路
+	}
+	
+	
+	fscanf(fp,"%d",&m);                              
+	while(m!=0)                                   //读接地支路参数，节点i,r为g1,x为b1
+	{	fscanf(fp,",%d,%lf,%lf",&i,&r,&x);
+		g[i][i]=g[i][i]+r;		      //r为负或0； 
+		b[i][i]=b[i][i]+x;		      //x为负
+		fscanf(fp,"%d",&m);		      //继续扫描
+	}
+	fscanf(fp,"%d",&m);
+	while(m!=0)                                    //节点功率数据，节点i,r=PGi,x=QGi,bb=PLi,k0=QLi。
+	{	fscanf(fp,",%d,%lf,%lf,%lf,%lf",&i,&r,&x,&bb,&k0);//
+		p[i]=r-bb;				//p[i]=PGi-PLi;
+		q[i]=x-k0;				//q[i]=QGi-QLi;
+		fscanf(fp,"%d",&m);			//继续扫描
+	}
+	fscanf(fp,"%d",&m);				//
+	n=0;
+	while(m!=0)                                //PV节点数据，节点i,r=电压Vi,x=Qmax无功功率下限，bb=Qmin无功功率上限
+	{	n=n+1;				   //序号，从第一个开始，记录有几个PV节点
+		fscanf(fp,",%d,%lf,%lf,%lf",&i,&r,&x,&bb);
+		pvd[n]=i;			   //PV节点的节点号
+		upv[n]=r;			   //电压Vi
+		upvmin[n]=x;			   //无功功率下限
+		upvmax[n]=bb;			   //无功功率上限
+		fscanf(fp,"%d",&m);		   //继续扫描
+	}		
+	fclose(fp);                              //扫描完后关闭文件
+	//疑似用牛顿-拉夫逊法
+	for(i=1;i<=z;i++)			//化成极坐标形式，得到节点导纳幅值和相角
+		for(j=1;j<=z;j++)
+		{	y[i][j]=sqrt(g[i][j]*g[i][j]+b[i][j]*b[i][j]);//计算节点导纳矩阵的幅值
+			hd[i][j]=atan2(b[i][j],g[i][j]);              //功率因数角
+		}
+	k=0;
+	for(i=1;i<=n;i++)
+		v[pvd[i]]=upv[i];				     //把对应记录的PV电压的幅值传给v[i]数组
+	v[phd]=uph;						     //把平衡节点的电压保存下来
+	p[phd]=0;						     //把平衡节点的注入无功赋0
+	q[phd]=0;						     //有功赋0
+	while ((k<=kk)&&(wch>=e))				    //判断是否超出预订求解次数，是否满足最小误差，不超出或不满足继续循环
+	{	for(i=1;i<=z;i++)				    //z为节点个数,按行一行行求出					
+		{	r=0;
+			x=0;
+			for(j=1;j<=z;j++)			     //求功率方程的前奏
+			{	r=r+y[i][j]*v[j]*cos(rad[i]-rad[j]-hd[i][j]);//r=累加y[i][j]*v[j]*cos(rad[i]-rad[j]-hd[i][j])
+				x=x+y[i][j]*v[j]*sin(rad[i]-rad[j]-hd[i][j]);//x=累加y[i][j]*v[j]*sin(rad[i]-rad[j]-hd[i][j])
+			}
+			pp[i]=r*v[i];				      //v[i]是公因子，减少计算机计算次数，提高运行速度
+			qq[i]=x*v[i];				    
+			dp[i]=p[i]-pp[i];			     //求不平衡量
+			dq[i]=q[i]-qq[i];
+		}
+		dp[phd]=0;						//有关平衡节点的除了电压值其余要赋0，不平衡量赋0
+		dq[phd]=0;
+		for(i=1;i<=n;i++)					//n是记录PV节点个数的，对PV节点的不平衡量赋0
+			dq[pvd[i]]=0;
+		/////收敛判据
+		x=fabs(dp[1]);						//在比较之前，赋初值
+		for(i=1;i<=z;i++)					//max{|P的不平衡量，Q的不平衡量|}<e,max{|U的不平衡量，角度的不平衡量|}<e
+		{	r=fabs(dp[i])-x;
+			if(r>0)
+				x=fabs(dp[i]);				//求出P的不平衡量最大值
+			r=fabs(dq[i])-x;				//比较P和Q的不平衡量的大小
+			if(r>0)
+				x=fabs(dq[i]);
+		}							
+		wch=x;							//经过循环，得出不平衡量的最大值赋给wch，用的精度是一个数e
+//////////////求出雅可比矩阵元素-H
+		s=0;
+		for(i=1;i<=z;i++)
+		{	t=0;
+			for(j=1;j<=z;j++)
+			{	if(i==j)
+				{	x=0;
+					for(m=1;m<=z;m++)
+						if(m!=i)//
+							x=x+y[i][m]*v[m]*sin(rad[i]-rad[m]-hd[i][m]);//需累加
+					hnjl[1+s*2][1+t*2]=v[i]*x;	//一行的Hii,
+				}
+				else					//一行的Hij
+					hnjl[1+s*2][1+t*2]=-v[i]*y[i][j]*v[j]*sin(rad[i]-rad[j]-hd[i][j]);//奇行\列
+				t=t+1;//
+			}
+			s=s+1;
+		}
+/////////////////////求出雅可比矩阵元素-N		//奇数行偶数列
+		s=0;
+		for(i=1;i<=z;i++)			
+		{	t=0;
+			for(j=1;j<=z;j++)
+			{	if(i==j)
+				{	x=0;
+					for(m=1;m<=z;m++)
+						x=x+y[i][m]*v[m]*cos(rad[i]-rad[m]-hd[i][m]);
+					hnjl[1+s*2][2+t*2]=-(v[i]*x+v[i]*v[i]*y[i][i]*cos(hd[i][i]));//Nii
+				}
+				else
+					hnjl[1+s*2][2+t*2]=-v[i]*y[i][j]*v[j]*cos(rad[i]-rad[j]-hd[i][j]);//Nij
+				t=t+1;
+			}
+			s=s+1;
+		}
+///////////////////求出雅可比矩阵元素-J
+		s=0;
+		for(i=1;i<=z;i++)
+		{	t=0;
+			for(j=1;j<=z;j++)
+			{	if(i==j)
+				{	x=0;
+					for(m=1;m<=z;m++)
+						if(m!=i)
+							x=x+y[i][m]*v[m]*cos(rad[i]-rad[m]-hd[i][m]);
+					hnjl[2+s*2][1+t*2]=-v[i]*x;					 //Jii
+				}
+				else
+					hnjl[2+s*2][1+t*2]=v[i]*y[i][j]*v[j]*cos(rad[i]-rad[j]-hd[i][j]);//Jij
+				t=t+1;
+			}
+			s=s+1;
+		}
+///////////////////////////////求出雅可比矩阵元素-L
+		s=0;
+		for(i=1;i<=z;i++)
+		{	t=0;
+			for(j=1;j<=z;j++)
+			{	if(i==j)
+				{	x=0;
+					for(m=1;m<=z;m++)
+						x=x+y[i][m]*v[m]*sin(rad[i]-rad[m]-hd[i][m]);		  //Lii
+					hnjl[2+s*2][2+t*2]=-(v[i]*x-v[i]*v[i]*y[i][i]*sin(hd[i][i]));   
+				}
+				else
+					hnjl[2+s*2][2+t*2]=-v[i]*y[i][j]*v[j]*sin(rad[i]-rad[j]-hd[i][j]);//Lij
+				t=t+1;
+			}
+			s=s+1;
+		}
+		///////////////////////处理修正方程的平衡节点和PV节点
+		for(i=1;i<=z*2;i++)
+		{	hnjl[i][2*phd-1]=0;				//phd为平衡节点号，对其H、N、J、L赋0
+			hnjl[i][2*phd]=0;
+			hnjl[2*phd-1][i]=0;
+			hnjl[2*phd][i]=0;
+		}
+		for(i=1;i<=n;i++)
+		{	
+			for(j=1;j<=z*2;j++)
+			{	hnjl[j][2*pvd[i]]=0;			//对PV节点的N、L赋0
+				hnjl[2*pvd[i]][j]=0;			//对PV节点的J赋0
+			}
+			hnjl[2*pvd[i]][2*pvd[i]]=999999;
+		}
+		hnjl[2*phd-1][2*phd-1]=999999;				//对平衡节点H、L赋值
+		hnjl[2*phd][2*phd]=999999;
+		//////////////////////////////////////////////////	LU分解
+		for(i=2;i<=z*2;i++)                           //第一列L元素
+			hnjl[i][1]=hnjl[i][1]/hnjl[1][1];
+		for(m=2;m<=z*2-1;m++)                            //m是行,i是列
+		{	for(i=m;i<=z*2;i++)                       //上三角（包括对角线）
+			{	x=0;
+				for(j=1;j<=m-1;j++)
+					x=x+hnjl[m][j]*hnjl[j][i];
+				hnjl[m][i]=hnjl[m][i]-x;
+			}
+			for(i=m+1;i<=z*2;i++)                     //L元素下三角
+			{	x=0;
+				for(j=1;j<=m-1;j++)
+				     x=x+hnjl[i][j]*hnjl[j][m];
+				hnjl[i][m]=(hnjl[i][m]-x)/hnjl[m][m];
+			}
+		}
+		x=0;
+		for(j=1;j<=z*2-1;j++)
+			x=x+hnjl[z*2][j]*hnjl[j][z*2];
+		hnjl[z*2][z*2]=hnjl[z*2][z*2]-x;			///LU分解结束
+
+
+		for(i=1;i<=z;i++)				//		
+		{	radv[1+(i-1)*2]=-dp[i];			//y1=b1
+			radv[2+(i-1)*2]=-dq[i];
+		}
+		for(i=2;i<=z*2;i++)
+		{	x=0;
+			for(j=1;j<=i-1;j++)
+				x=x+hnjl[i][j]*radv[j];
+			radv[i]=radv[i]-x;			//yi		
+		}
+		radv[z*2]=radv[z*2]/hnjl[z*2][z*2];		//xn=yn/unn
+		for(i=z*2-1;i>=1;i--)
+		{	x=0;
+			for(j=i+1;j<=z*2;j++)
+				x=x+hnjl[i][j]*radv[j];
+			radv[i]=(radv[i]-x)/hnjl[i][i];
+		}
+////////////////////求出雅可比矩阵新值
+		for(i=1;i<=z;i++)
+		{	rad[i]=rad[i]+radv[1+(i-1)*2];
+			v[i]=v[i]+radv[2+(i-1)*2]*v[i];
+		}
+		k=k+1;                            //k是循环求解次数
+	}
+	if(k>=kk)                             //当循环次数k大于选定阀值kk时判定为不收敛
+		printf("不收敛");
+	else                                 //循环次数小于kk，说明满足最小误差，判断为收敛
+	{	x=0;
+		r=0;
+		for(i=1;i<=z;i++)
+		{	x=x+y[phd][i]*v[i]*cos(rad[phd]-rad[i]-hd[phd][i]);
+			r=r+y[phd][i]*v[i]*sin(rad[phd]-rad[i]-hd[phd][i]);
+		}
+		p[phd]=x*v[phd];		//平衡节点的有功出力
+		q[phd]=r*v[phd];		//平衡节点的无功出力
+		for(j=1;j<=n;j++)
+		{	r=0;
+			for(i=1;i<=z;i++)
+				r=r+y[pvd[j]][i]*v[i]*sin(rad[pvd[j]]-rad[i]-hd[pvd[j]][i]);
+			q[pvd[j]]=r*v[pvd[j]];		//PV节点的无功出力
+		}
+	fp=fopen("text1.txt","wb");                 //打开名为text1.txt的文件，用于写操作
+	fprintf(fp,"节点数为%d系统\n",z);           //向文件写入求解的系统的节点总数
+	fprintf(fp,"程序收敛，迭代次数为%d次\n",k); //向文件写入求解的系统的迭代次数
+	fprintf(fp,"节点号,     电压,       相角\n");//向文件写入求解的电压值和相角
+	for(i=1;i<=z;i++)                         //z为总节点个数
+		fprintf(fp,"  %d,  %f,   %f\n" ,i,v[i],rad[i]);
+	fprintf(fp,"节点,     p,          q\n");     //向文件写入求解出来的有功和无功
+	for(i=1;i<=z;i++)
+		fprintf(fp,"  %d,  %f,   %f\n" ,i,p[i],q[i]);
+	fclose(fp);                              //关闭文件
+	}
+}
+

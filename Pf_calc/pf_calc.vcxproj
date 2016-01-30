@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B7A2B49A-7E2A-41DE-A310-0B97C52E5D12}</ProjectGuid>
+    <RootNamespace>pf_calc</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>D:\系统文档\Documents\Visual Studio 2013\Projects\pf_calc\Code\suport\Matrix;D:\系统文档\Documents\Visual Studio 2013\Projects\pf_calc\Code\powersys_calc;D:\系统文档\Documents\Visual Studio 2013\Projects\pf_calc\Code\powersys_calc\sta;D:\系统文档\Documents\Visual Studio 2013\Projects\pf_calc\Code\powersys_calc\pf;D:\系统文档\Documents\Visual Studio 2013\Projects\pf_calc\Code\powersys_calc\methods;D:\系统文档\Documents\Visual Studio 2013\Projects\pf_calc\Code\powersys_calc\methods\nl;D:\系统文档\Documents\Visual Studio 2013\Projects\pf_calc\Code\suport\sp1.3_cplusplus\inc;D:\系统文档\Documents\Visual Studio 2013\Projects\pf_calc\Code\suport\sp1.3_cplusplus;D:\系统文档\Documents\Visual Studio 2013\Projects\pf_calc\Code\suport\sp1.3_c;D:\系统文档\Documents\Visual Studio 2013\Projects\pf_calc\Code\suport;D:\系统文档\Documents\Visual Studio 2013\Projects\pf_calc\Code\pf_calc;D:\系统文档\Documents\Visual Studio 2013\Projects\pf_calc\Code\matrix;D:\系统文档\Documents\Visual Studio 2013\Projects\pf_calc\Code\defs;D:\系统文档\Documents\Visual Studio 2013\Projects\pf_calc\Code\data_io;D:\系统文档\Documents\Visual Studio 2013\Projects\pf_calc\Code\config;D:\系统文档\Documents\Visual Studio 2013\Projects\pf_calc\Code\app\ui\console;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\系统文档\Documents\Visual Studio 2013\Projects\pf_calc\Code\suport\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>D:\系统文档\Documents\Visual Studio 2013\Projects\pf_calc\Code\suport\sp1.3_c;D:\系统文档\Documents\Visual Studio 2008\Projects\pf_calc\suport;D:\系统文档\Documents\Visual Studio 2008\Projects\pf_calc\data_input;D:\系统文档\Documents\Visual Studio 2008\Projects\pf_calc\matrix_calc;D:\系统文档\Documents\Visual Studio 2008\Projects\pf_calc\pf_calc;D:\系统文档\Documents\Visual Studio 2008\Projects\pf_calc\defs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>ultrix;hpux;hp300;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <BrowseInformation>true</BrowseInformation>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <CallingConvention>Cdecl</CallingConvention>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+      <CLRUnmanagedCodeCheck>false</CLRUnmanagedCodeCheck>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
+      <AssemblyLinkResource>blaslib.lib;sparse1_3lib.lib;superlulib.lib;%(AdditionalDependencies)</AssemblyLinkResource>
+    </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Code\app\ui\console\main.cpp" />
+    <ClCompile Include="..\Code\app\ui\console\UserProcesses.cpp" />
+    <ClCompile Include="..\Code\data_io\DataFileReader.cpp" />
+    <ClCompile Include="..\Code\data_io\DataFileReaderForIeee.cpp" />
+    <ClCompile Include="..\Code\data_io\DataFileReaderForLBCTest.cpp" />
+    <ClCompile Include="..\Code\data_io\DataIOTool.cpp" />
+    <ClCompile Include="..\Code\data_io\PowerFlowCalcObjSelectorIeee.cpp" />
+    <ClCompile Include="..\Code\defs\PfCalcNode.cpp" />
+    <ClCompile Include="..\Code\pf_calc\PowerFlowCalcObjSelector.cpp" />
+    <ClCompile Include="..\Code\powersys_calc\methods\MethodSolvePowerSysNlEquations.cpp" />
+    <ClCompile Include="..\Code\powersys_calc\methods\nl\MethodNewtonRaphson.cpp" />
+    <ClCompile Include="..\Code\powersys_calc\methods\nl\MethodNewtonRaphsonAiiBiiBuilder.cpp" />
+    <ClCompile Include="..\Code\powersys_calc\methods\nl\MethodNewtonRaphsonAiiBiiBuilder_General.cpp" />
+    <ClCompile Include="..\Code\powersys_calc\methods\nl\MethodNewtonRaphsonAiiBiiBuilder_IterCSR.cpp" />
+    <ClCompile Include="..\Code\powersys_calc\methods\nl\MethodNewtonRaphsonDeltaPQU2Builder.cpp" />
+    <ClCompile Include="..\Code\powersys_calc\methods\nl\MethodNewtonRaphsonDeltaPQU2Builder_General.cpp" />
+    <ClCompile Include="..\Code\powersys_calc\methods\nl\MethodNewtonRaphsonDeltaPQU2Builder_IterCSR.cpp" />
+    <ClCompile Include="..\Code\powersys_calc\methods\nl\MethodNewtonRaphsonDeltaPQU2Builder_IterRows.cpp" />
+    <ClCompile Include="..\Code\powersys_calc\methods\nl\MethodNewtonRaphsonHnjlsrBuilder.cpp" />
+    <ClCompile Include="..\Code\powersys_calc\methods\nl\MethodNewtonRaphsonHnjlsrBuilder_General.cpp" />
+    <ClCompile Include="..\Code\powersys_calc\methods\nl\MethodNewtonRaphsonHnjlsrBuilder_IterCSR.cpp" />
+    <ClCompile Include="..\Code\powersys_calc\pf\PowerSysCalcFlow.cpp" />
+    <ClCompile Include="..\Code\powersys_calc\PowerSysCalculation.cpp" />
+    <ClCompile Include="..\Code\powersys_calc\sta\PowerSysCalcStability.cpp" />
+    <ClCompile Include="..\Code\suport\BindingsOfUserCmdCodeAndString.cpp" />
+    <ClCompile Include="..\Code\suport\CList.cpp" />
+    <ClCompile Include="..\Code\suport\ConsoleUi.cpp" />
+    <ClCompile Include="..\Code\suport\ConsoleUiStatusTable.cpp" />
+    <ClCompile Include="..\Code\suport\ConsoleUiStatusTableLine.cpp" />
+    <ClCompile Include="..\Code\suport\ConsoleUiTransform.cpp" />
+    <ClCompile Include="..\Code\suport\ConsoleUser.cpp" />
+    <ClCompile Include="..\Code\suport\FunctionPtr.cpp" />
+    <ClCompile Include="..\Code\suport\Matrix\DMatrix.cpp" />
+    <ClCompile Include="..\Code\suport\Matrix\Matrix.cpp" />
+    <ClCompile Include="..\Code\suport\Matrix\SMatrix.cpp" />
+    <ClCompile Include="..\Code\suport\Matrix\SMatrixCS.cpp" />
+    <ClCompile Include="..\Code\suport\Matrix\SMatrixCSC.cpp" />
+    <ClCompile Include="..\Code\suport\Matrix\SMatrixCSR.cpp" />
+    <ClCompile Include="..\Code\suport\Matrix\SMatrixSP1_3.cpp" />
+    <ClCompile Include="..\Code\suport\NumericGeneral.cpp" />
+    <ClCompile Include="..\Code\suport\pf_calc_debug_functions.cpp" />
+    <ClCompile Include="..\Code\suport\sp1.3_cplusplus\spallocate.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Code\suport\sp1.3_cplusplus\spbuild.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Code\suport\sp1.3_cplusplus\spfactor.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Code\suport\sp1.3_cplusplus\spfortran.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Code\suport\sp1.3_cplusplus\spoutput.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Code\suport\sp1.3_cplusplus\spsolve.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Code\suport\sp1.3_cplusplus\sputils.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Code\suport\stringExtends.cpp" />
+    <ClCompile Include="..\Code\suport\Timing.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Code\app\ui\console\UserCmdAndStatus.h" />
+    <ClInclude Include="..\Code\app\ui\console\UserProcesses.h" />
+    <ClInclude Include="..\Code\config\pf_calc_sys_cfg.h" />
+    <ClInclude Include="..\Code\data_io\DataFileReader.h" />
+    <ClInclude Include="..\Code\data_io\DataFileReaderForIeee.h" />
+    <ClInclude Include="..\Code\data_io\DataFileReaderForLBCTest.h" />
+    <ClInclude Include="..\Code\data_io\DataIOTool.h" />
+    <ClInclude Include="..\Code\data_io\PowerFlowCalcObjSelectorIeee.h" />
+    <ClInclude Include="..\Code\defs\def_data_type_fptr.h" />
+    <ClInclude Include="..\Code\defs\pf_calc_def_data_type.h" />
+    <ClInclude Include="..\Code\defs\PfCalcNode.h" />
+    <ClInclude Include="..\Code\pf_calc\PowerFlowCalcObjSelector.h" />
+    <ClInclude Include="..\Code\powersys_calc\methods\MethodSolvePowerSysNlEquations.h" />
+    <ClInclude Include="..\Code\powersys_calc\methods\nl\MethodNewtonRaphson.h" />
+    <ClInclude Include="..\Code\powersys_calc\methods\nl\MethodNewtonRaphsonAiiBiiBuilder.h" />
+    <ClInclude Include="..\Code\powersys_calc\methods\nl\MethodNewtonRaphsonAiiBiiBuilder_General.h" />
+    <ClInclude Include="..\Code\powersys_calc\methods\nl\MethodNewtonRaphsonAiiBiiBuilder_IterCSR.h" />
+    <ClInclude Include="..\Code\powersys_calc\methods\nl\MethodNewtonRaphsonDeltaPQU2Builder.h" />
+    <ClInclude Include="..\Code\powersys_calc\methods\nl\MethodNewtonRaphsonDeltaPQU2Builder_General.h" />
+    <ClInclude Include="..\Code\powersys_calc\methods\nl\MethodNewtonRaphsonDeltaPQU2Builder_IterCSR.h" />
+    <ClInclude Include="..\Code\powersys_calc\methods\nl\MethodNewtonRaphsonDeltaPQU2Builder_IterRows.h" />
+    <ClInclude Include="..\Code\powersys_calc\methods\nl\MethodNewtonRaphsonHnjlsrBuilder.h" />
+    <ClInclude Include="..\Code\powersys_calc\methods\nl\MethodNewtonRaphsonHnjlsrBuilder_General.h" />
+    <ClInclude Include="..\Code\powersys_calc\methods\nl\MethodNewtonRaphsonHnjlsrBuilder_IterCSR.h" />
+    <ClInclude Include="..\Code\powersys_calc\pf\PowerSysCalcFlow.h" />
+    <ClInclude Include="..\Code\powersys_calc\PowerSysCalculation.h" />
+    <ClInclude Include="..\Code\powersys_calc\sta\PowerSysCalcStability.h" />
+    <ClInclude Include="..\Code\suport\BindingsOfUserCmdCodeAndString.h" />
+    <ClInclude Include="..\Code\suport\CList.h" />
+    <ClInclude Include="..\Code\suport\ConsoleUi.h" />
+    <ClInclude Include="..\Code\suport\ConsoleUiStatusTable.h" />
+    <ClInclude Include="..\Code\suport\ConsoleUiStatusTableLine.h" />
+    <ClInclude Include="..\Code\suport\ConsoleUiTransform.h" />
+    <ClInclude Include="..\Code\suport\ConsoleUser.h" />
+    <ClInclude Include="..\Code\suport\FunctionPtr.h" />
+    <ClInclude Include="..\Code\suport\Matrix\DMatrix.h" />
+    <ClInclude Include="..\Code\suport\Matrix\Matrix.h" />
+    <ClInclude Include="..\Code\suport\Matrix\SMatrix.h" />
+    <ClInclude Include="..\Code\suport\Matrix\SMatrixCS.h" />
+    <ClInclude Include="..\Code\suport\Matrix\SMatrixCSC.h" />
+    <ClInclude Include="..\Code\suport\Matrix\SMatrixCSR.h" />
+    <ClInclude Include="..\Code\suport\Matrix\SMatrixSP1_3.h" />
+    <ClInclude Include="..\Code\suport\Matrix\SMatrix_Enum.h" />
+    <ClInclude Include="..\Code\suport\NumericGeneral.h" />
+    <ClInclude Include="..\Code\suport\pf_calc_debug_defs.h" />
+    <ClInclude Include="..\Code\suport\sp1.3_cplusplus\inc\spconfig.h" />
+    <ClInclude Include="..\Code\suport\sp1.3_cplusplus\inc\spdefs.h" />
+    <ClInclude Include="..\Code\suport\sp1.3_cplusplus\inc\spmatrix.h" />
+    <ClInclude Include="..\Code\suport\stringExtends.h" />
+    <ClInclude Include="..\Code\suport\Timing.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\Debug\checkef.txt" />
+    <Text Include="..\Debug\ieee5.txt" />
+    <Text Include="..\Debug\l413.txt" />
+    <Text Include="..\Debug\result_output.txt" />
+    <Text Include="..\Debug\test_data_input.txt" />
+    <Text Include="..\Debug\test_data_output.txt" />
+    <Text Include="..\Debug\test_lu_picompose_input.txt" />
+    <Text Include="..\Debug\test_lu_picompose_output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Debug\IEEE1047.dat" />
+    <None Include="..\Debug\IEEE118.dat" />
+    <None Include="..\Debug\IEEE14.dat" />
+    <None Include="..\Debug\IEEE300.dat" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\Code\suport\lib\BlasLib.lib" />
+    <Library Include="..\Code\suport\lib\sparse1_3lib.lib" />
+    <Library Include="..\Code\suport\lib\superLuLib.lib" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
